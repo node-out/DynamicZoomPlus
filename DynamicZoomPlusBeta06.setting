@@ -1,0 +1,778 @@
+{
+	Tools = ordered() {
+		DynamicZoomPlusBeta06 = MacroOperator {
+			Inputs = ordered() {
+				Input1 = InstanceInput {
+					SourceOp = "strec",
+					Source = "Center",
+					Name = "Start Position",
+				},
+				Input2 = InstanceInput {
+					SourceOp = "enrec",
+					Source = "Center",
+					Name = "End Position",
+				},
+				Input3 = InstanceInput {
+					SourceOp = "startTR",
+					Source = "Size",
+					Name = "Start Size",
+					Default = 1,
+				},
+				Input4 = InstanceInput {
+					SourceOp = "endTR",
+					Source = "Size",
+					Name = "End Size",
+					Default = 1,
+				},
+				Input5 = InstanceInput {
+					SourceOp = "effect",
+					Source = "edelay",
+					Name = "Hold Start",
+					MaxScale = 30,
+					Default = 15,
+				},
+				Input6 = InstanceInput {
+					SourceOp = "effect",
+					Source = "speed",
+					Name = "End Start",
+					MaxScale = 30,
+					Default = 15,
+				},
+				Input7 = InstanceInput {
+					SourceOp = "effect",
+					Source = "sguide",
+					Name = "Show Guides",
+				},
+				Input8 = InstanceInput {
+					SourceOp = "effect",
+					Source = "AnimationSettings",
+				},
+				Input9 = InstanceInput {
+					SourceOp = "mainAnimCurve",
+					Source = "EaseIn",
+				},
+				Input10 = InstanceInput {
+					SourceOp = "mainAnimCurve",
+					Source = "EaseOut",
+				},
+				Input11 = InstanceInput {
+					SourceOp = "mainAnimCurve",
+					Source = "Mirror",
+				},
+				Input12 = InstanceInput {
+					SourceOp = "mainAnimCurve",
+					Source = "Invert",
+				},
+				MainInput1 = InstanceInput {
+					SourceOp = "mINPUT",
+					Source = "Foreground",
+				},
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput {
+					SourceOp = "mOUTPUT",
+					Source = "Output",
+				}
+			},
+			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			Tools = ordered() {
+				strec = RectangleMask {
+					CtrlWZoom = false,
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						BorderWidth = Input { Value = 0.01, },
+						Solid = Input { Value = 0, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Center = Input {
+							SourceOp = "StartPosition",
+							Source = "Value",
+						},
+						Width = Input {
+							SourceOp = "startSizeValue",
+							Source = "Value",
+						},
+						Height = Input {
+							SourceOp = "startSizeValue",
+							Source = "Value",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1045, -511.5 } },
+				},
+				startSizeValue = PublishNumber {
+					NameSet = true,
+					Inputs = {
+						Value = Input { Value = 0.7, },
+					},
+				},
+				enrec = RectangleMask {
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						BorderWidth = Input { Value = 0.01, },
+						Solid = Input { Value = 0, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Center = Input {
+							SourceOp = "EndPosition",
+							Source = "Value",
+						},
+						Width = Input {
+							SourceOp = "endSizeValue",
+							Source = "Value",
+						},
+						Height = Input {
+							SourceOp = "endSizeValue",
+							Source = "Value",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1155, -511.5 } },
+				},
+				endSizeValue = PublishNumber {
+					NameSet = true,
+					Inputs = {
+						Value = Input { Value = 0.5, },
+					},
+				},
+				StartPosition = PublishPoint {
+					CtrlWZoom = false,
+					Inputs = {
+						Value = Input { Value = { 0.38, 0.5 }, },
+					},
+				},
+				EndPosition = PublishPoint {
+					CtrlWZoom = false,
+					Inputs = {
+						Value = Input { Value = { 0.72, 0.5 }, },
+					},
+				},
+				startTR = Transform {
+					NameSet = true,
+					Inputs = {
+						Center = Input {
+							SourceOp = "StartPosition",
+							Source = "Value",
+						},
+						Size = Input {
+							SourceOp = "startSizeValue",
+							Source = "Value",
+						},
+						Input = Input {
+							SourceOp = "PipeRouter13",
+							Source = "Output",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 935, -445.5 } },
+				},
+				endTR = Transform {
+					NameSet = true,
+					Inputs = {
+						Center = Input {
+							SourceOp = "EndPosition",
+							Source = "Value",
+						},
+						Size = Input {
+							SourceOp = "endSizeValue",
+							Source = "Value",
+						},
+						Input = Input {
+							SourceOp = "PipeRouter12",
+							Source = "Output",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1265, -445.5 } },
+				},
+				effect = Dissolve {
+					Transitions = {
+						[0] = "DFTDissolve"
+					},
+					NameSet = true,
+					Inputs = {
+						checkE = Input { Value = 15, },
+						checkS = Input { Value = 15, },
+						Mix = Input {
+							Value = 0,
+							Expression = "sguide",
+						},
+						Background = Input {
+							SourceOp = "PipeRouter4",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "PipeRouter3",
+							Source = "Output",
+						},
+						CommentsNest = Input { Value = 0, },
+						FrameRenderScriptNest = Input { Value = 0, },
+						edelay = Input { Value = 15, },
+						speed = Input { Value = 15, },
+						t = Input {
+							SourceOp = "mainAnimCurve",
+							Source = "Value",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 660, 445.5 } },
+					UserControls = ordered() { edelay = { INP_MaxAllowed = 1000000, INP_Integer = true, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INPID_InputControl = "SliderControl", INP_MinScale = 0, INP_MaxScale = 1, LINKS_Name = "delay", }, speed = { INPID_InputControl = "SliderControl", INP_Integer = true, LINKID_DataType = "Number", LINKS_Name = "speed", }, sguide = { CBC_TriState = false, INP_Integer = false, LINKID_DataType = "Number", INPID_InputControl = "CheckboxControl", LINKS_Name = "sguide", }, mblur = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "CheckboxControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", CBC_TriState = false, LINKS_Name = "mblur", }, t = { INP_MaxAllowed = 1000000, INP_Integer = false, INP_MinAllowed = -1000000, INPID_InputControl = "SliderControl", INP_MinScale = 0, LINKID_DataType = "Number", INP_MaxScale = 1, LINKS_Name = "t", }, AnimationSettings = { INP_MaxAllowed = 1000000, INP_Integer = false, LBLC_DropDownButton = false, INPID_InputControl = "LabelControl", LBLC_NumInputs = 4, INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", INP_External = false, LINKS_Name = "Animation Settings", } }
+				},
+				mainAnimCurve = LUTLookup {
+					NameSet = true,
+					Inputs = {
+						Source = Input { Value = FuID { "Duration" }, },
+						Curve = Input { Value = FuID { "Easing" }, },
+						EaseIn = Input { Value = FuID { "Cubic" }, },
+						EaseOut = Input { Value = FuID { "Cubic" }, },
+						Lookup = Input {
+							SourceOp = "mainAnimCurveLookup",
+							Source = "Value",
+						},
+						TimeScale = Input {
+							Value = 1.42857142857143,
+							Expression = "comp.GlobalEnd/(comp.GlobalEnd-effect.speed-effect.edelay)",
+						},
+						TimeOffset = Input {
+							Value = 0.15,
+							Expression = "effect.edelay/comp.GlobalEnd",
+						},
+					},
+				},
+				mainAnimCurveLookup = LUTBezier {
+					KeyColorSplines = {
+						[0] = {
+							[0] = { 0, RH = { 0.333333333333333, 0.333333333333333 }, Flags = { Linear = true } },
+							[1] = { 1, LH = { 0.666666666666667, 0.666666666666667 }, Flags = { Linear = true } }
+						}
+					},
+					SplineColor = { Red = 255, Green = 255, Blue = 255 },
+				},
+				imageFrame = Background {
+					NameSet = true,
+					Inputs = {
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Depth = Input {
+							Value = 1,
+							Expression = "bgFrame.Depth",
+						},
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						TopLeftAlpha = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 660, -16.5 } },
+				},
+				mINPUT = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "imageFrame",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 660, 82.5 } },
+				},
+				PipeRouter1 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "mINPUT",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 825, 148.5 } },
+				},
+				PipeRouter2 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "mINPUT",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 495, 148.5 } },
+				},
+				mrgGuides = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "PipeRouter1",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "PipeRouter10",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 825, 313.5 } },
+				},
+				dZoom = Transform {
+					NameSet = true,
+					Inputs = {
+						Quality = Input { Value = 4, },
+						ShutterAngle = Input { Value = 220, },
+						Center = Input {
+							SourceOp = "renameOffset",
+							Source = "Position",
+						},
+						Pivot = Input {
+							SourceOp = "CenterPublish",
+							Source = "Value",
+						},
+						Size = Input {
+							SourceOp = "dzoomInvert",
+							Source = "Result",
+						},
+						XSize = Input { Value = 1.999755, },
+						YSize = Input { Value = 1.999755, },
+						Input = Input {
+							SourceOp = "PipeRouter2",
+							Source = "Output",
+						},
+						CommentsNest = Input { Value = 0, },
+						FrameRenderScriptNest = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 495, 313.5 } },
+				},
+				renameOffset = Offset {
+					CtrlWZoom = false,
+					NameSet = true,
+					Inputs = {
+						Position = Input {
+							SourceOp = "CenterPublish",
+							Source = "Value",
+						},
+						Offset = Input { Value = { 0, 0 }, },
+						FlipPosHoriz = Input { Value = 1, },
+						FlipPosVert = Input { Value = 1, },
+						ImageAspect = Input { Value = 1.777778, },
+						AngleScale = Input { Value = 1, },
+					},
+				},
+				CenterPublish = PublishPoint {
+					CtrlWZoom = false,
+					NameSet = true,
+					Inputs = {
+						Value = Input {
+							Value = { 0.414139044173533, 0.439262103258069 },
+							Expression = "Point( enrec.Center.X * mainAnimCurve.Value + (strec.Center.X - (strec.Center.X * mainAnimCurve.Value)), enrec.Center.Y * mainAnimCurve.Value + (strec.Center.Y - (strec.Center.Y * mainAnimCurve.Value)))",
+						},
+					},
+				},
+				dzoomInvert = Calculation {
+					CtrlWZoom = false,
+					NameSet = true,
+					Inputs = {
+						FirstOperand = Input { Value = 1, },
+						Operator = Input { Value = 3, },
+						SecondOperand = Input {
+							SourceOp = "sizeResult",
+							Source = "Result",
+						},
+					},
+				},
+				sizeResult = Calculation {
+					NameSet = true,
+					Inputs = {
+						FirstOperand = Input {
+							SourceOp = "trEndxTime",
+							Source = "Result",
+						},
+						SecondOperand = Input {
+							SourceOp = "trStarttrStartsxTime",
+							Source = "Result",
+						},
+					},
+				},
+				trEndxTime = Calculation {
+					NameSet = true,
+					Inputs = {
+						FirstOperand = Input {
+							SourceOp = "endSizeValue",
+							Source = "Value",
+						},
+						Operator = Input { Value = 2, },
+						SecondOperand = Input {
+							SourceOp = "mainAnimCurve",
+							Source = "Value",
+						},
+					},
+				},
+				trStarttrStartsxTime = Calculation {
+					NameSet = true,
+					Inputs = {
+						FirstOperand = Input {
+							SourceOp = "startSizeValue",
+							Source = "Value",
+						},
+						Operator = Input { Value = 1, },
+						SecondOperand = Input {
+							SourceOp = "trStartxTime",
+							Source = "Result",
+						},
+					},
+				},
+				trStartxTime = Calculation {
+					NameSet = true,
+					Inputs = {
+						FirstOperand = Input {
+							SourceOp = "startSizeValue",
+							Source = "Value",
+						},
+						Operator = Input { Value = 2, },
+						SecondOperand = Input {
+							SourceOp = "mainAnimCurve",
+							Source = "Value",
+						},
+					},
+				},
+				Instance_strec = RectangleMask {
+					NameSet = true,
+					SourceOp = "strec",
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "strec",
+							Source = "Mask",
+						},
+						SettingsNest = Input { },
+						BorderWidth = Input { },
+						PaintMode = Input { Value = FuID { "Subtract" }, },
+						Solid = Input { },
+						["ShapeRasterizer.Nest"] = Input { },
+						CommentsNest = Input { },
+						FrameRenderScriptNest = Input { },
+						StartRenderScripts = Input { },
+						EndRenderScripts = Input { },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1045, -379.5 } },
+				},
+				stcolor = Background {
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "Instance_strec",
+							Source = "Mask",
+						},
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Depth = Input {
+							Value = 1,
+							Expression = "bgFrame.Depth",
+						},
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						TopLeftBlue = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1045, -280.5 } },
+				},
+				PipeRouter13 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "strec",
+							Source = "Mask",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 1045, -445.5 } },
+				},
+				PipeRouter5 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "stcolor",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 1045, -181.5 } },
+				},
+				mrgGuideSE = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "encolor",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "PipeRouter5",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1155, -181.5 } },
+				},
+				Instance_enrec = RectangleMask {
+					NameSet = true,
+					SourceOp = "enrec",
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "enrec",
+							Source = "Mask",
+						},
+						SettingsNest = Input { },
+						BorderWidth = Input { },
+						PaintMode = Input { Value = FuID { "Subtract" }, },
+						Solid = Input { },
+						["ShapeRasterizer.Nest"] = Input { },
+						CommentsNest = Input { },
+						FrameRenderScriptNest = Input { },
+						StartRenderScripts = Input { },
+						EndRenderScripts = Input { },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1155, -379.5 } },
+				},
+				encolor = Background {
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "Instance_enrec",
+							Source = "Mask",
+						},
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Depth = Input {
+							Value = 1,
+							Expression = "bgFrame.Depth",
+						},
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						TopLeftRed = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1155, -280.5 } },
+				},
+				PipeRouter4 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "dZoom",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 495, 445.5 } },
+				},
+				PipeRouter3 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "mrgGuides",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 825, 445.5 } },
+				},
+				PipeRouter12 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "enrec",
+							Source = "Mask",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 1155, -445.5 } },
+				},
+				mOUTPUT = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "bgFrame",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "effect",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 660, 577.5 } },
+				},
+				bgFrame = Background {
+					NameSet = true,
+					Inputs = {
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Depth = Input { Value = 1, },
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						TopLeftAlpha = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 495, 577.5 } },
+				},
+				mrgGuidePosition = Merge {
+					NameSet = true,
+					Inputs = {
+						Blend = Input { Value = 0.75, },
+						Background = Input {
+							SourceOp = "mrgGuideSE",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "ccolor",
+							Source = "Output",
+						},
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, -181.5 } },
+				},
+				mrgETime = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "mrgSTime",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "endTimeG",
+							Source = "Output",
+						},
+						Center = Input { Value = { 0.96, 0.1 }, },
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, 181.5 } },
+				},
+				mrgSTime = Merge {
+					NameSet = true,
+					Inputs = {
+						Background = Input {
+							SourceOp = "mrgGuidePosition",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "startTimeG",
+							Source = "Output",
+						},
+						Center = Input { Value = { 0.04, 0.1 }, },
+						PerformDepthMerge = Input { Value = 0, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, 148.5 } },
+				},
+				ccolor = Background {
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "Instance_crec",
+							Source = "Mask",
+						},
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						Depth = Input {
+							Value = 1,
+							Expression = "bgFrame.Depth",
+						},
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						TopLeftRed = Input { Value = 1, },
+						TopLeftGreen = Input { Value = 1, },
+						TopLeftBlue = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, -280.5 } },
+				},
+				crec = RectangleMask {
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						BorderWidth = Input { Value = 0.01, },
+						Solid = Input { Value = 0, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Center = Input {
+							SourceOp = "CenterPublish",
+							Source = "Value",
+						},
+						Width = Input {
+							SourceOp = "sizeResult",
+							Source = "Result",
+						},
+						Height = Input {
+							SourceOp = "sizeResult",
+							Source = "Result",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, -511.5 } },
+				},
+				Instance_crec = RectangleMask {
+					NameSet = true,
+					SourceOp = "crec",
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "crec",
+							Source = "Mask",
+						},
+						SettingsNest = Input { },
+						BorderWidth = Input { },
+						PaintMode = Input { Value = FuID { "Subtract" }, },
+						Solid = Input { },
+						["ShapeRasterizer.Nest"] = Input { },
+						CommentsNest = Input { },
+						FrameRenderScriptNest = Input { },
+						StartRenderScripts = Input { },
+						EndRenderScripts = Input { },
+					},
+					ViewInfo = OperatorInfo { Pos = { 1375, -379.5 } },
+				},
+				PipeRouter10 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "mrgETime",
+							Source = "Output",
+						},
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 1375, 313.5 } },
+				},
+				endTimeG = TextPlus {
+					NameSet = true,
+					Inputs = {
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						StyledText = Input {
+							Value = "15",
+							Expression = "comp.RenderEnd-time",
+						},
+						Font = Input { Value = "Open Sans", },
+						Style = Input { Value = "Bold", },
+						VerticalJustificationNew = Input { Value = 3, },
+						HorizontalLeftCenterRight = Input { Value = 1, },
+						HorizontalJustificationNew = Input { Value = 3, },
+						ManualFontKerningPlacement = Input {
+							Value = StyledText {
+								Array = {
+								},
+								Value = ""
+							},
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1540, 181.5 } },
+				},
+				startTimeG = TextPlus {
+					NameSet = true,
+					Inputs = {
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						UseFrameFormatSettings = Input { Value = 1, },
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						StyledText = Input {
+							Value = "85",
+							Expression = "time",
+						},
+						Font = Input { Value = "Open Sans", },
+						Style = Input { Value = "Bold", },
+						VerticalJustificationNew = Input { Value = 3, },
+						HorizontalLeftCenterRight = Input { Value = -1, },
+						HorizontalJustificationNew = Input { Value = 3, },
+						ManualFontKerningPlacement = Input {
+							Value = StyledText {
+								Array = {
+								},
+								Value = ""
+							},
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 1540, 148.5 } },
+				}
+			},
+		}
+	},
+	ActiveTool = "DynamicZoomPlusBeta06"
+}
