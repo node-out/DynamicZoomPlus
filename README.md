@@ -2,7 +2,7 @@
 Macro to update the native Davinci Resolve Dynamic Zoom
 
 The native dynamic zoom in resolve is always the length of the entire clip.
-I created this plugin because sometimes I would want an image or clip to wait before zooming in or out and the hold the final framing like in documentaries.
+I created this plugin because sometimes I would like an image or clip to wait before zooming in or out and the hold the final framing like in documentaries.
 
 This macro uses two transform nodes with no output because it is best for resizing the framing rectangles via Fusion Overlay.
 The nodes are named *startTR* and *endTR*.
