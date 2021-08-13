@@ -15,3 +15,7 @@ and a rectangle then represents the end framing (how zoomed out the clip will be
 The center position of these are published and like to the transform nodes.
 
 *crec* is where the calculation of the framing takes place based on an animation curve.
+
+---
+
+--- Will add more details more later of node structure later ---
