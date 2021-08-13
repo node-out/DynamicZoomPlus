@@ -18,4 +18,4 @@ The center position of these are published and like to the transform nodes.
 
 ---
 
---- Will add more details more later of node structure later ---
+--- Will add more details about the node structure later ---
